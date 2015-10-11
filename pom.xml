@@ -10,13 +10,84 @@
 	<artifactId>wicket-application-template</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	
+
 	<properties>
+		<!-- WICKET version -->
 		<wicket.version>6.20.0</wicket.version>
+		<!-- JAULP-WICKET version -->
+		<jaulp.wicket.version>6.20.2</jaulp.wicket.version>
 	</properties>
-	
+
+	<dependencyManagement>
+
+		<dependencies>
+			<!-- AUTHORIZATION-STRATEGY DEPENDENCIES -->
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>authorization.strategy.api</artifactId>
+				<version>${authorization.strategy.api.version}</version>
+			</dependency>
+			<!-- JAULP WICKET DEPENDENCIES -->
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>jaulp.wicket.annotated.header.contributors</artifactId>
+				<version>${jaulp.wicket.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>jaulp.wicket.base</artifactId>
+				<version>${jaulp.wicket.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>jaulp.wicket.components</artifactId>
+				<version>${jaulp.wicket.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>jaulp.wicket.behaviors</artifactId>
+				<version>${jaulp.wicket.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>jaulp.wicket.data.provider</artifactId>
+				<version>${jaulp.wicket.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>jaulp.wicket.dialogs</artifactId>
+				<version>${jaulp.wicket.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>jaulp.wicket.dropdownchoices</artifactId>
+				<version>${jaulp.wicket.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>wicket.bootstrap3</artifactId>
+				<version>6.20.1</version>
+			</dependency>
+
+		</dependencies>
+
+	</dependencyManagement>
+
 	<dependencies>
-		<!--  WICKET DEPENDENCIES -->
+
+		<!-- LOMBOK DEPENDENCIES -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+		<!-- WICKET DEPENDENCIES -->
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-core</artifactId>
@@ -25,22 +96,73 @@
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-extensions</artifactId>
 		</dependency>
+		<!-- JAULP WICKET DEPENDENCIES -->
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>jaulp.wicket.base</artifactId>
+		</dependency>
 
-		<!-- LOGGING DEPENDENCIES - LOG4J -->
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>wicket.bootstrap3</artifactId>
+		</dependency>
+		<!-- JETTY 9 DEPENDENCIES TEST -->
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-server</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-webapp</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-util</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-jmx</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-deploy</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>wicket-jetty9-runner</artifactId>
+		</dependency>
+		<!-- LOGGING DEPENDENCIES -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<!-- LOGGING DEPENDENCIES - LOG4J -->
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 		</dependency>
-
-		<!--  JUNIT DEPENDENCY FOR TESTING -->
+		<!-- UNIT DEPENDENCY FOR TESTING -->
+		<!-- TESTNG DEPENDENCY FOR TESTING -->
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- JUNIT DEPENDENCY FOR TESTING -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<!-- JAULP DEPENDENCIES -->
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>jaulp.file</artifactId>
 		</dependency>
 
 	</dependencies>

@@ -1,9 +1,10 @@
 package application;
 
+import org.apache.log4j.Logger;
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.protocol.http.WebApplication;
 
 import pages.HomePage;
+import de.alpharogroup.wicket.bootstrap3.application.WicketBootstrap3Application;
 
 /**
  * Application object for your web application.
@@ -11,8 +12,13 @@ import pages.HomePage;
  *
  * @see org.jaulp.wicket.prototype.Start#main(String[])
  */
-public class WicketApplication extends WebApplication
+public class WicketApplication extends WicketBootstrap3Application
 {
+	public static final int DEFAULT_HTTP_PORT = 9090;
+	public static final int DEFAULT_HTTPS_PORT = 9443;
+	/** The Constant logger. */
+	protected static final Logger LOGGER = Logger.getLogger(WicketApplication.class.getName());
+
 	/**
 	 * @see org.apache.wicket.Application#getHomePage()
 	 */
@@ -22,14 +28,11 @@ public class WicketApplication extends WebApplication
 		return HomePage.class;
 	}
 
-	/**
-	 * @see org.apache.wicket.Application#init()
-	 */
 	@Override
-	public void init()
+	public String getPackageToScan()
 	{
-		super.init();
-
-		// add your configuration here
+		// TODO include in properties to overwrite ...
+		return "pages";
 	}
+
 }
