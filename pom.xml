@@ -4,18 +4,17 @@
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>wicket-application</artifactId>
-		<version>6.0.0</version>
+		<version>7.3.13</version>
+		<relativePath></relativePath>
 	</parent>
 
 	<artifactId>wicket-application-template</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>7.1.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<properties>
-		<!-- WICKET version -->
-		<wicket.version>6.20.0</wicket.version>
 		<!-- JAULP-WICKET version -->
-		<jaulp.wicket.version>6.20.2</jaulp.wicket.version>
+		<jaulp.wicket.version>7.1.0</jaulp.wicket.version>
 	</properties>
 
 	<dependencyManagement>
@@ -73,7 +72,7 @@
 			<dependency>
 				<groupId>de.alpharogroup</groupId>
 				<artifactId>wicket.bootstrap3</artifactId>
-				<version>6.20.1</version>
+				<version>7.1.0</version>
 			</dependency>
 
 		</dependencies>
@@ -81,20 +80,15 @@
 	</dependencyManagement>
 
 	<dependencies>
-
-		<!-- LOMBOK DEPENDENCIES -->
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-		</dependency>
 		<!-- WICKET DEPENDENCIES -->
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-extensions</artifactId>
+		</dependency>
+		<!-- WICKET-SOURCE DEPENDENCIES -->
+		<dependency>
+			<groupId>net.ftlines.wicket-source</groupId>
+			<artifactId>wicket-source</artifactId>
 		</dependency>
 		<!-- JAULP WICKET DEPENDENCIES -->
 		<dependency>
@@ -131,38 +125,15 @@
 			<groupId>de.alpharogroup</groupId>
 			<artifactId>wicket-jetty9-runner</artifactId>
 		</dependency>
-		<!-- LOGGING DEPENDENCIES -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency>
-		<!-- LOGGING DEPENDENCIES - LOG4J -->
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-		</dependency>
-		<!-- UNIT DEPENDENCY FOR TESTING -->
-		<!-- TESTNG DEPENDENCY FOR TESTING -->
-		<dependency>
-			<groupId>org.testng</groupId>
-			<artifactId>testng</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<!-- JUNIT DEPENDENCY FOR TESTING -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<!-- JAULP DEPENDENCIES -->
+		<!-- EXTENSION LIB DEPENDENCIES -->
 		<dependency>
 			<groupId>de.alpharogroup</groupId>
-			<artifactId>jaulp.file</artifactId>
+			<artifactId>file-worker</artifactId>
+		</dependency>
+		<!-- WICKET-JS-ADDONS DEPENDENCIES -->
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>wicket-session-timeout</artifactId>
 		</dependency>
 
 	</dependencies>

@@ -1,10 +1,23 @@
 package application;
 
-import org.apache.log4j.Logger;
-import org.apache.wicket.markup.html.WebPage;
+import java.util.Arrays;
+import java.util.List;
 
-import pages.HomePage;
+import org.apache.log4j.Logger;
+import org.apache.wicket.Application;
+import org.apache.wicket.IApplicationListener;
+import org.apache.wicket.Session;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.request.Request;
+import org.apache.wicket.request.Response;
+
+import de.alpharogroup.collections.ListExtensions;
+import de.alpharogroup.wicket.base.application.plugins.ApplicationDebugSettingsPlugin;
+import de.alpharogroup.wicket.base.util.application.ApplicationExtensions;
 import de.alpharogroup.wicket.bootstrap3.application.WicketBootstrap3Application;
+import net.ftlines.wicketsource.WicketSource;
+import pages.area.publicly.home.HomePage;
 
 /**
  * Application object for your web application.
@@ -17,10 +30,31 @@ public class WicketApplication extends WicketBootstrap3Application
 	public static final int DEFAULT_HTTP_PORT = 9090;
 	public static final int DEFAULT_HTTPS_PORT = 9443;
 	/** The Constant logger. */
-	protected static final Logger LOGGER = Logger.getLogger(WicketApplication.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(WicketApplication.class.getName());
 
 	/**
-	 * @see org.apache.wicket.Application#getHomePage()
+	 * Gets the WicketApplication.
+	 *
+	 * @return the WicketApplication object.
+	 */
+	public static WicketApplication get()
+	{
+		return (WicketApplication)Application.get();
+	}
+
+
+	/**
+	 * Gets the domain name.
+	 *
+	 * @return the domain name
+	 */
+	public String getDomainName()
+	{
+		return "jaulp-wicket-components.com";
+	}
+
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Class<? extends WebPage> getHomePage()
@@ -28,11 +62,167 @@ public class WicketApplication extends WicketBootstrap3Application
 		return HomePage.class;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	protected String[] newPackagesToScan()
+	{
+		final String[] packagesToScan = { "application" };
+		return packagesToScan;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getPackageToScan()
 	{
-		// TODO include in properties to overwrite ...
-		return "pages";
+		return ListExtensions.getFirst(newPackagesToScanAsList());
+	}
+
+	/**
+	 * Factory callback method that returns the packages to scan as a {@link List} object.
+	 *
+	 * @return the {@link List} with the packages to scan
+	 */
+	protected List<String> newPackagesToScanAsList()
+	{
+		return Arrays.asList(newPackagesToScan());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected int newHttpPort()
+	{
+		if (getProperties().containsKey("application.http.port"))
+		{
+			final String httpPortString = getProperties().getProperty("application.http.port");
+			try
+			{
+				final int httpPort = Integer.valueOf(httpPortString);
+				return httpPort;
+			}
+			catch (final NumberFormatException e)
+			{
+				return WicketApplication.DEFAULT_HTTP_PORT;
+			}
+		}
+		return WicketApplication.DEFAULT_HTTP_PORT;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected int newHttpsPort()
+	{
+		if (getProperties().containsKey("application.https.port"))
+		{
+			final String httpsPortString = getProperties().getProperty("application.https.port");
+			try
+			{
+				final int httpsPort = Integer.valueOf(httpsPortString);
+				return httpsPort;
+			}
+			catch (final NumberFormatException e)
+			{
+				return WicketApplication.DEFAULT_HTTPS_PORT;
+			}
+		}
+		return WicketApplication.DEFAULT_HTTPS_PORT;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Session newSession(final Request request, final Response response)
+	{
+		final WicketSession session = new WicketSession(request);
+		session.bind();
+		LOGGER.info("new session:" + session.getId());
+		return session;
+	}
+
+	/**
+	 * Called just before a the application configurations.
+	 */
+	@Override
+	protected void onBeforeApplicationConfigurations()
+	{
+		super.onBeforeApplicationConfigurations();
+	}
+
+	@Override
+	protected void onDeploymentModeSettings()
+	{
+		super.onDeploymentModeSettings();
+	}
+
+	@Override
+	protected void onDevelopmentModeSettings()
+	{
+		super.onDevelopmentModeSettings();
+		// Demonstration how to install the debug plugin...
+		new ApplicationDebugSettingsPlugin()
+		{
+			/**
+			 * The serialVersionUID
+			 */
+			private static final long serialVersionUID = 1L;
+
+			/**
+			 * {@inheritDoc}
+			 */
+			@Override
+			protected void onConfigure(final WebApplication application)
+			{
+				super.onConfigure(application);
+				// Adds the references from source code to the browser to reference in eclipse....
+				WicketSource.configure(application);
+			};
+		}.install(this);
+
+		// add an applicationListener...
+		this.getApplicationListeners().add(new IApplicationListener()
+		{
+			/**
+			 * {@inheritDoc}
+			 */
+			@Override
+			public void onAfterInitialized(final Application application)
+			{
+				LOGGER.info("Wicket application is initialized");
+				// here can comes code that is needed after the application
+				// initialization...
+			}
+
+			/**
+			 * {@inheritDoc}
+			 */
+			@Override
+			public void onBeforeDestroyed(final Application application)
+			{
+				LOGGER.info("Wicket application is destroyed");
+				// here can comes code that is needed before the application
+				// been destroyed...
+			}
+		});
+		// strip wicket tags...
+		this.getMarkupSettings().setStripWicketTags(true);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void onGlobalSettings()
+	{
+		super.onGlobalSettings();
+		ApplicationExtensions.setGlobalSettings(this, newHttpPort(), newHttpsPort(),
+			FOOTER_FILTER_NAME, "UTF-8", "+*.css", "+*.png", "+*.woff2", "+*.js.map");
 	}
 
 }

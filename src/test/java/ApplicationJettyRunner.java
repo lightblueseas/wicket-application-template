@@ -31,7 +31,7 @@ import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 
 import application.WicketApplication;
-import de.alpharogroup.file.delete.DeleteFileUtils;
+import de.alpharogroup.file.delete.DeleteFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 import de.alpharogroup.jetty9.runner.Jetty9Runner;
 import de.alpharogroup.jetty9.runner.config.FilterHolderConfiguration;
@@ -40,7 +40,7 @@ import de.alpharogroup.jetty9.runner.config.ServletContextHandlerConfiguration;
 import de.alpharogroup.jetty9.runner.config.ServletHolderConfiguration;
 import de.alpharogroup.jetty9.runner.factories.DeploymentManagerFactory;
 import de.alpharogroup.jetty9.runner.factories.ServletContextHandlerFactory;
-import de.alpharogroup.jetty9.runner.log.LoggerExtensions;
+import de.alpharogroup.log.LoggerExtensions;
 
 @ExtensionMethod(LoggerExtensions.class)
 public class ApplicationJettyRunner
@@ -68,7 +68,7 @@ public class ApplicationJettyRunner
 		{
 			try
 			{
-				DeleteFileUtils.delete(logfile);
+				DeleteFileExtensions.delete(logfile);
 			}
 			catch (final IOException e)
 			{
