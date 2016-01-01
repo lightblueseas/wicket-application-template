@@ -41,6 +41,7 @@ import de.alpharogroup.jetty9.runner.config.ServletHolderConfiguration;
 import de.alpharogroup.jetty9.runner.factories.DeploymentManagerFactory;
 import de.alpharogroup.jetty9.runner.factories.ServletContextHandlerFactory;
 import de.alpharogroup.log.LoggerExtensions;
+import de.alpharogroup.wicket.base.application.ConfigurationPropertiesResolver;
 
 @ExtensionMethod(LoggerExtensions.class)
 public class ApplicationJettyRunner
@@ -111,11 +112,19 @@ public class ApplicationJettyRunner
 		final ServletContextHandler servletContextHandler, final ContextHandlerCollection contexts,
 		final DeploymentManager deployer)
 	{
+		final ConfigurationPropertiesResolver configurationPropertiesResolver =
+			new ConfigurationPropertiesResolver(
+				WicketApplication.DEFAULT_HTTP_PORT,
+				WicketApplication.DEFAULT_HTTPS_PORT,
+				ConfigurationPropertiesResolver.DEFAULT_CONFIGURATION_PROPERTIES_FILENAME);
+
 		final Jetty9RunConfiguration config = Jetty9RunConfiguration.builder()
 			.servletContextHandler(servletContextHandler).contexts(contexts).deployer(deployer)
-			.httpPort(WicketApplication.DEFAULT_HTTP_PORT)
-			.httpsPort(WicketApplication.DEFAULT_HTTPS_PORT).keyStorePassword("wicket")
+			.httpPort(configurationPropertiesResolver.getHttpPort())
+			.httpsPort(configurationPropertiesResolver.getHttpsPort())
+			.keyStorePassword("wicket")
 			.keyStorePathResource("/keystore").build();
+
 		return config;
 	}
 }
