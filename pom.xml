@@ -1,20 +1,23 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
 	<parent>
 		<groupId>de.alpharogroup</groupId>
-		<artifactId>wicket-application</artifactId>
-		<version>7.3.13</version>
+		<artifactId>mvn-wicket-application-parent</artifactId>
+		<version>6.25.0</version>
 		<relativePath></relativePath>
 	</parent>
 
 	<artifactId>wicket-application-template</artifactId>
-	<version>7.1.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<properties>
 		<!-- JAULP-WICKET version -->
-		<jaulp.wicket.version>7.1.0</jaulp.wicket.version>
+		<jaulp.wicket.version>6.25.0</jaulp.wicket.version>
+		<!-- JAULP-WICKET version -->
+		<jaulp.wicket.version>6.25.0</jaulp.wicket.version>
+		<authorization.strategy.api.version>6.25.0</authorization.strategy.api.version>
 	</properties>
 
 	<dependencyManagement>
@@ -69,12 +72,6 @@
 				<version>${jaulp.wicket.version}</version>
 			</dependency>
 
-			<dependency>
-				<groupId>de.alpharogroup</groupId>
-				<artifactId>wicket.bootstrap3</artifactId>
-				<version>7.1.0</version>
-			</dependency>
-
 		</dependencies>
 
 	</dependencyManagement>
@@ -98,8 +95,9 @@
 
 		<dependency>
 			<groupId>de.alpharogroup</groupId>
-			<artifactId>wicket.bootstrap3</artifactId>
+			<artifactId>jaulp.wicket.components</artifactId>
 		</dependency>
+
 		<!-- JETTY 9 DEPENDENCIES TEST -->
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
@@ -137,4 +135,5 @@
 		</dependency>
 
 	</dependencies>
+
 </project>

@@ -22,7 +22,6 @@ import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.filter.HeaderResponseContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.AbstractLink;
@@ -33,30 +32,17 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.settings.JavaScriptLibrarySettings;
-import org.apache.wicket.util.string.StringValue;
-import org.apache.wicket.util.time.Duration;
 import org.odlabs.wiquery.core.javascript.JsUtils;
 
 import application.WicketApplication;
 import application.WicketSession;
-import de.agilecoders.wicket.core.Bootstrap;
-import de.agilecoders.wicket.core.markup.html.bootstrap.behavior.BootstrapBaseBehavior;
-import de.agilecoders.wicket.core.markup.html.bootstrap.block.Code;
-import de.agilecoders.wicket.core.markup.html.bootstrap.common.NotificationPanel;
-import de.agilecoders.wicket.core.markup.html.bootstrap.html.HtmlTag;
-import de.agilecoders.wicket.core.markup.html.bootstrap.html.IeEdgeMetaTag;
-import de.agilecoders.wicket.core.markup.html.bootstrap.html.OptimizedMobileViewportMetaTag;
-import de.agilecoders.wicket.core.settings.IBootstrapSettings;
 import de.alpharogroup.resourcebundle.locale.ResourceBundleKey;
 import de.alpharogroup.wicket.base.GenericBasePage;
-import de.alpharogroup.wicket.base.util.parameter.PageParametersExtensions;
 import de.alpharogroup.wicket.base.util.resource.ResourceModelFactory;
 import de.alpharogroup.wicket.behaviors.BuildableChainableStatement;
 import de.alpharogroup.wicket.behaviors.FaviconBehavior;
 import de.alpharogroup.wicket.behaviors.JavascriptAppenderBehavior;
 import de.alpharogroup.wicket.behaviors.JqueryStatementsBehavior;
-import de.alpharogroup.wicket.bootstrap3.application.WicketBootstrap3Application;
 import de.alpharogroup.wicket.components.footer.FooterMenuPanel;
 import de.alpharogroup.wicket.components.footer.FooterPanel;
 import de.alpharogroup.wicket.components.i18n.list.LinkListPanel;
@@ -135,42 +121,11 @@ public abstract class ApplicationBasePage<T> extends GenericBasePage<T>
 	protected void onInitialize()
 	{
 		super.onInitialize();
-        add(new HtmlTag("html"));
-        add(new OptimizedMobileViewportMetaTag("viewport"));
-        add(new IeEdgeMetaTag("ie-edge"));
 		add(new FaviconBehavior());
-		add(new BootstrapBaseBehavior());
 		final HeaderResponseContainer headerResponseContainer = new HeaderResponseContainer(
-			WicketBootstrap3Application.FOOTER_FILTER_NAME,
-			WicketBootstrap3Application.FOOTER_FILTER_NAME);
+			WicketApplication.FOOTER_FILTER_NAME,
+			WicketApplication.FOOTER_FILTER_NAME);
 		add(headerResponseContainer);
-        add(new Code("code-internal"));
-	}
-
-	/**
-	 * Change theme.
-	 *
-	 * @param themeParameter
-	 *            the theme parameter
-	 */
-	protected void changeTheme(final String themeParameter)
-	{
-		if ((themeParameter != null) && !themeParameter.isEmpty())
-		{
-			final IBootstrapSettings settings = Bootstrap.getSettings(getWicketApplication());
-			settings.getActiveThemeProvider().setActiveTheme(themeParameter);
-		}
-	}
-
-	/**
-	 * sets the theme for the current user.
-	 *
-	 * @param pageParameters
-	 *            current page parameters
-	 */
-	private void configureTheme(final PageParameters pageParameters)
-	{
-		newTheme(pageParameters.get("theme"));
 	}
 
 	/**
@@ -248,7 +203,7 @@ public abstract class ApplicationBasePage<T> extends GenericBasePage<T>
 	protected JavascriptAppenderBehavior newSessionTimeoutBehavior(final String id, final SessionTimeoutSettings settings) {
 		final SessionTimeoutJsGenerator generator = new SessionTimeoutJsGenerator(settings);
 		final String jsCode = generator.generateJs();
-		return JavascriptAppenderBehavior.builder().id(id).javascript(jsCode).build();
+		return JavascriptAppenderBehavior.of(id, jsCode);
 	}
 
 
@@ -265,11 +220,7 @@ public abstract class ApplicationBasePage<T> extends GenericBasePage<T>
 	 */
 	protected FeedbackPanel newFeedbackPanel(final String id, final IModel<T> model)
 	{
-		final NotificationPanel notificationPanel = new NotificationPanel(id);
-		notificationPanel.setOutputMarkupId(true);
-		notificationPanel.setOutputMarkupPlaceholderTag(true);
-		notificationPanel.hideAfter(Duration.seconds(5));
-		return notificationPanel;
+		return new FeedbackPanel(id);
 	}
 
 	/**
@@ -402,24 +353,12 @@ public abstract class ApplicationBasePage<T> extends GenericBasePage<T>
 	}
 
 	/**
-	 * Factory method for creating a new theme from the given {@link StringValue} that comes from the page parameters.
-	 *
-	 * @param theme
-	 *            the new theme to set.
-	 */
-	protected void newTheme(final StringValue theme)
-	{
-		changeTheme(PageParametersExtensions.getString(theme));
-	}
-
-	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected void onConfigure()
 	{
 		super.onConfigure();
-		configureTheme(getPageParameters());
 	}
 
 	/**
@@ -429,10 +368,6 @@ public abstract class ApplicationBasePage<T> extends GenericBasePage<T>
 	public void renderHead(final IHeaderResponse response)
 	{
 		super.renderHead(response);
-		final JavaScriptLibrarySettings javaScriptSettings = getApplication()
-			.getJavaScriptLibrarySettings();
-		response.render(JavaScriptHeaderItem.forReference(javaScriptSettings.getJQueryReference()));
-		Bootstrap.renderHead(response);
 		HeaderResponseExtensions.renderHeaderResponse(response, ApplicationBasePage.class);
 	}
 

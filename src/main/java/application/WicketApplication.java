@@ -14,8 +14,8 @@ import org.apache.wicket.request.Response;
 
 import de.alpharogroup.collections.ListExtensions;
 import de.alpharogroup.wicket.base.application.plugins.ApplicationDebugSettingsPlugin;
+import de.alpharogroup.wicket.base.application.seo.DisableJSessionIDinUrlApplication;
 import de.alpharogroup.wicket.base.util.application.ApplicationExtensions;
-import de.alpharogroup.wicket.bootstrap3.application.WicketBootstrap3Application;
 import net.ftlines.wicketsource.WicketSource;
 import pages.area.publicly.home.HomePage;
 
@@ -25,7 +25,7 @@ import pages.area.publicly.home.HomePage;
  *
  * @see org.jaulp.wicket.prototype.Start#main(String[])
  */
-public class WicketApplication extends WicketBootstrap3Application
+public class WicketApplication extends DisableJSessionIDinUrlApplication
 {
 	public static final int DEFAULT_HTTP_PORT = 19090;
 	public static final int DEFAULT_HTTPS_PORT = 19443;
@@ -65,7 +65,6 @@ public class WicketApplication extends WicketBootstrap3Application
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	protected String[] newPackagesToScan()
 	{
 		final String[] packagesToScan = { "application" };
@@ -75,7 +74,6 @@ public class WicketApplication extends WicketBootstrap3Application
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public String getPackageToScan()
 	{
 		return ListExtensions.getFirst(newPackagesToScanAsList());
